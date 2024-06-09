@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({});
@@ -40,9 +40,13 @@ function Login() {
 
   return (
     <>
-      <h1 className="text-center font-lale text-3xl mt-10 mb-5">ورود</h1>
+      <h1 className="text-center font-lale text-3xl mt-10 mb-5 dark:text-gray-200">
+        ورود
+      </h1>
       <div class="w-96 backdrop-blur-lg bg-opacity-80 rounded-lg shadow-lg p-5 m-auto  dark:bg-gray-900 text-white">
-        <h2 class="text-2xl font-bold pb-5">SignUp</h2>
+        <h2 class="text-2xl font-bold pb-5 text-gray-700 dark:text-gray-200 text-center">
+          SignUp
+        </h2>
         <form onSubmit={handleSubmit}>
           <div class="mb-4">
             <label
@@ -83,9 +87,11 @@ function Login() {
               class="text-white bg-purple-600 hover:bg-purple-700 font-vazir  font-medium rounded-lg text-sm py-2.5 px-5 w-full sm:w-auto">
               ورود
             </button>
-            <div class="flex items-center text-sm text-gray-800 font-vazir">
-              <p class=" cursor-pointer mr-2 font-bold">ثبت نام</p>
+            <div class="flex items-center text-sm text-gray-800 font-vazir dark:text-gray-200">
               <p>حساب کاربری ندارید؟</p>
+              <Link to="/signup" class=" cursor-pointer mr-2 font-bold">
+                ثبت نام
+              </Link>
             </div>
           </div>
         </form>
