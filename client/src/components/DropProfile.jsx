@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ProfileLogo from "../asset/image/icons8-user-default-64.png";
 
 function DropProfile() {
   const [profile, setProfile] = useState(false);
@@ -7,62 +8,57 @@ function DropProfile() {
   };
   return (
     <>
-      <button
-        id="dropdownDefaultButton"
-        onClick={profileHandler}
-        data-dropdown-toggle="dropdown"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 relative inset-y-0"
-        type="button">
-        saba@gmail.com
-        <svg
-          className="w-2.5 h-2.5 ms-3"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 10 6">
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="m1 1 4 4 4-4"
-          />
-        </svg>
-      </button>
+      <div onClick={profileHandler}>
+        <img src={ProfileLogo} alt="" className="" />
+      </div>
       {profile ? (
         <div
           id="dropdown"
-          className=" absolute top-20  md:left-24 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+          className=" absolute top-20  md:left-24 bg-white divide-y divide-gray-800 dark:divide-gray-200 rounded-lg shadow w-44 dark:bg-gray-700 p-2">
+          <h3 className="mx-2 text-gray-700 dark:text-gray-200 py-1">
+            saba@gmail.com
+          </h3>
           <ul
-            className="py-2 text-sm text-gray-700 dark:text-gray-200"
+            className="py-2 text-sm text-gray-700 dark:text-gray-200 flex flex-col justify-center"
             aria-labelledby="dropdownDefaultButton">
-            <li>
+            <li className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
               <a
                 href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                Dashboard
+                className="block px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                بروفایل
               </a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-5">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
+                />
+              </svg>
             </li>
-            <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                Settings
+
+            <li className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+              <a href="#" className="block px-2 py-2 font-vazir">
+                خروج
               </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                Earnings
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                Sign out
-              </a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-5">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                />
+              </svg>
             </li>
           </ul>
         </div>

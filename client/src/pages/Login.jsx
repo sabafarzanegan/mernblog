@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Alert, Spinner } from "flowbite-react";
+
+import {
+  LoginStart,
+  LoginSuccess,
+  LoginFailed,
+} from "../components/redux/UserSlice";
 
 function Login() {
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setErrorMessage] = useState(null);
+  const {
+    error: errorMessage,
+    currentUser,
+    loading,
+  } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   const changeHandler = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -13,28 +27,29 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields.");
+      return dispatch(signInFailure("Please fill all the fields"));
     }
+
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(LoginStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
+
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        dispatch(LoginFailed(data.message));
       }
-      setLoading(false);
+
       if (res.ok) {
+        dispatch(LoginSuccess(data));
+
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(LoginFailed(error.message));
     }
   };
 
@@ -81,11 +96,18 @@ function Login() {
           <div>
             <p class="text-red-500 pb-5"></p>
           </div>
-          <div class="flex items-center justify-between mb-4">
+          <div class="md:flex items-center justify-between mb-4">
             <button
               type="submit"
-              class="text-white bg-purple-600 hover:bg-purple-700 font-vazir  font-medium rounded-lg text-sm py-2.5 px-5 w-full sm:w-auto">
-              ورود
+              class="text-white mb-2 bg-purple-600 hover:bg-purple-700 font-vazir  font-medium rounded-lg text-sm py-2.5 px-5 w-full md:w-auto">
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">در حال ارسال...</span>
+                </>
+              ) : (
+                "ورود"
+              )}
             </button>
             <div class="flex items-center text-sm text-gray-800 font-vazir dark:text-gray-200">
               <p>حساب کاربری ندارید؟</p>
@@ -95,6 +117,11 @@ function Login() {
             </div>
           </div>
         </form>
+        {errorMessage && (
+          <Alert className="mt-5" color="failure">
+            {errorMessage}
+          </Alert>
+        )}
       </div>
     </>
   );
