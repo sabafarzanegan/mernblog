@@ -38,24 +38,28 @@ export default function Header() {
       </Link>
 
       <div className="flex md:order-2">
-        <Dropdown
-          arrowIcon={true}
-          inline
-          label={<Avatar alt="User settings" img={ProfileLogo} rounded />}>
-          <DropdownHeader>
-            <span className="block text-sm">saba</span>
-            <span className="block truncate text-sm font-medium">
-              {/* {currentUser.email} */}
-            </span>
-          </DropdownHeader>
-          <DropdownItem className="font-vazir">
-            <Link to="/profile">پروفایل</Link>
-          </DropdownItem>
-          <DropdownItem className="font-vazir">نشان شده ها</DropdownItem>
+        {currentUser.username ? (
+          <Dropdown
+            arrowIcon={true}
+            inline
+            label={<Avatar alt="User settings" img={ProfileLogo} rounded />}>
+            <DropdownHeader>
+              <span className="block text-sm">{currentUser.username}</span>
+              <span className="block truncate text-sm font-medium">
+                {currentUser.email}
+              </span>
+            </DropdownHeader>
+            <DropdownItem className="font-vazir">
+              <Link to="/profile">پروفایل</Link>
+            </DropdownItem>
+            <DropdownItem className="font-vazir">نشان شده ها</DropdownItem>
 
-          <DropdownDivider />
-          <DropdownItem className="font-vazir">خروج</DropdownItem>
-        </Dropdown>
+            <DropdownDivider />
+            <DropdownItem className="font-vazir">خروج</DropdownItem>
+          </Dropdown>
+        ) : (
+          <Button gradientDuoTone="purpleToBlue">Purple to Blue</Button>
+        )}
 
         <NavbarToggle />
       </div>
