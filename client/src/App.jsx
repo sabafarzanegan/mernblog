@@ -11,6 +11,7 @@ import Blogs from "./pages/Blogs";
 import Contact from "./pages/Contact";
 import Header from "./components/Navbar";
 import Profile from "./pages/Profile";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
 
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />

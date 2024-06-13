@@ -11,3 +11,7 @@
   font-family: "lale";
   src: url(./asset//Font/Lalezar-Regular.ttf);
 }
+
+.darkbody {
+  background-color: #ccc;
+}

@@ -49,7 +49,7 @@ function SignUp() {
 
   return (
     <>
-      <h1 classNameclassName="text-center font-lale text-3xl mt-10 mb-5 dark:text-gray-200">
+      <h1 className="text-center font-lale text-3xl mt-10 mb-5 dark:text-gray-200">
         ثبت نام
       </h1>
       <div className="w-96 backdrop-blur-lg bg-opacity-80 rounded-lg shadow-lg p-5 m-auto  dark:bg-gray-900 text-white">
