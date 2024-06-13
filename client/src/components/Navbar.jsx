@@ -69,7 +69,7 @@ export default function Header() {
               </span>
             </DropdownHeader>
             <DropdownItem className="font-vazir">
-              <Link to="/profile">پروفایل</Link>
+              <Link to="/dashboard">پروفایل</Link>
             </DropdownItem>
             <DropdownItem className="font-vazir">نشان شده ها</DropdownItem>
 
