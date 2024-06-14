@@ -13,6 +13,8 @@ import Header from "./components/Navbar";
 
 import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
+import AdminPrivateRoute from "./components/AdminPrivateRoute";
+import CreatePost from "./pages/CreatePost";
 
 function App() {
   return (
@@ -27,6 +29,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+          <Route element={<AdminPrivateRoute />}>
+            <Route path="/create-post" element={<CreatePost />} />
           </Route>
 
           <Route path="/signup" element={<SignUp />} />

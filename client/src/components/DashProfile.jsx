@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Label, TextInput, Alert, Spinner } from "flowbite-react";
+import { Label, TextInput, Alert, Spinner, Button } from "flowbite-react";
 import { useSelector, useDispatch } from "react-redux";
 import { IoTrashBinSharp } from "react-icons/io5";
 import { HiOutlineLogout } from "react-icons/hi";
@@ -13,6 +13,7 @@ import {
   signoutSuccess,
 } from "./redux/UserSlice";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 function DashProfile() {
   const [formData, setFormData] = useState({});
 
@@ -145,6 +146,13 @@ function DashProfile() {
               "به روز رسانی"
             )}
           </button>
+          {currentUser.isAdmin && (
+            <Link to="/create-post">
+              <Button gradientDuoTone="purpleToPink" className="w-full">
+                ساختن بلاگ
+              </Button>
+            </Link>
+          )}
           <div className="flex items-center justify-between font-vazir">
             <span
               onClick={handleSignout}

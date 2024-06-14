@@ -7,6 +7,7 @@ import { LuSun } from "react-icons/lu";
 import { LuMoon } from "react-icons/lu";
 
 import { toggleTheme } from "./redux/themeSlice";
+import { signoutSuccess } from "./redux/UserSlice";
 
 import {
   Avatar,
@@ -24,6 +25,7 @@ import {
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
+
   const { theme } = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
@@ -32,6 +34,21 @@ export default function Header() {
   }, []);
   const switchHandler = () => {
     dispatch(toggleTheme());
+  };
+  const handleSignout = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -74,7 +91,9 @@ export default function Header() {
             <DropdownItem className="font-vazir">نشان شده ها</DropdownItem>
 
             <DropdownDivider />
-            <DropdownItem className="font-vazir">خروج</DropdownItem>
+            <DropdownItem onClick={handleSignout} className="font-vazir">
+              خروج
+            </DropdownItem>
           </Dropdown>
         ) : (
           <Button gradientDuoTone="purpleToBlue" className="font-vazir ">
