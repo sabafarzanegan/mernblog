@@ -1,6 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import { FaUserCheck } from "react-icons/fa";
-import { AiOutlineLogout } from "react-icons/ai";
+
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -26,10 +26,6 @@ export default function DashSidebar() {
               داشبورد
             </Sidebar.Item>
           </Link>
-
-          <Sidebar.Item icon={AiOutlineLogout}>
-            خروج از حساب کاربری
-          </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

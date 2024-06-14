@@ -99,7 +99,7 @@ function Login() {
           <div class="md:flex items-center justify-between mb-4">
             <button
               type="submit"
-              class="text-white mb-2 bg-purple-600 hover:bg-purple-700 font-vazir  font-medium rounded-lg text-sm py-2.5 px-5 w-full md:w-auto">
+              className="text-white mb-2 bg-purple-600 hover:bg-purple-700 font-vazir  font-medium rounded-lg text-sm py-2.5 px-5 w-full md:w-auto">
               {loading ? (
                 <>
                   <Spinner size="sm" />
