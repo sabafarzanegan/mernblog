@@ -3,7 +3,15 @@ import { Label, TextInput, Alert, Spinner } from "flowbite-react";
 import { useSelector, useDispatch } from "react-redux";
 import { IoTrashBinSharp } from "react-icons/io5";
 import { HiOutlineLogout } from "react-icons/hi";
-import { updateStart, updateSuccess, updateFailed } from "./redux/UserSlice";
+import {
+  updateStart,
+  updateSuccess,
+  updateFailed,
+  deletuserStart,
+  deletuserSuccess,
+  deletuserFailed,
+  signoutSuccess,
+} from "./redux/UserSlice";
 import Swal from "sweetalert2";
 function DashProfile() {
   const [formData, setFormData] = useState({});
@@ -41,6 +49,42 @@ function DashProfile() {
       }
     } catch (error) {
       dispatch(updateFailed(error.message));
+    }
+  };
+  const deletUserHandel = async () => {
+    try {
+      dispatch(deletuserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(deletuserFailed(data.message));
+      } else {
+        dispatch(deletuserSuccess(data));
+        Swal.fire({
+          title: "حساب کاربری شما حذف شد!",
+          icon: "warning",
+        });
+      }
+    } catch (error) {
+      dispatch(deletuserFailed(error.message));
+    }
+  };
+
+  const handleSignout = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
   return (
@@ -102,11 +146,15 @@ function DashProfile() {
             )}
           </button>
           <div className="flex items-center justify-between font-vazir">
-            <span className="text-lg text-red-600 cursor-pointer flex items-center gap-x-1 rounded-md hover:border-red-600 hover:border px-2 py-1 hover:bg-red-600 hover:text-white">
+            <span
+              onClick={handleSignout}
+              className="text-lg text-red-600 cursor-pointer flex items-center gap-x-1 rounded-md hover:border-red-600 hover:border px-2 py-1 hover:bg-red-600 hover:text-white">
               <HiOutlineLogout />
               خروج
             </span>
-            <span className="text-lg text-red-600 cursor-pointer flex items-center gap-x-1 rounded-md hover:border-red-600 hover:border px-2 py-1 hover:bg-red-600 hover:text-white">
+            <span
+              onClick={deletUserHandel}
+              className="text-lg text-red-600 cursor-pointer flex items-center gap-x-1 rounded-md hover:border-red-600 hover:border px-2 py-1 hover:bg-red-600 hover:text-white">
               <IoTrashBinSharp />
               حذف اکانت
             </span>

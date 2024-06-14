@@ -11,11 +11,7 @@ import {
 
 function Login() {
   const [formData, setFormData] = useState({});
-  const {
-    error: errorMessage,
-    currentUser,
-    loading,
-  } = useSelector((state) => state.user);
+  const { error, currentUser, loading } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -117,9 +113,9 @@ function Login() {
             </div>
           </div>
         </form>
-        {errorMessage && (
+        {error && (
           <Alert className="mt-5" color="failure">
-            {errorMessage}
+            {error}
           </Alert>
         )}
       </div>
