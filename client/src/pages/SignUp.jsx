@@ -10,6 +10,7 @@ import {
 } from "../components/redux/UserSlice";
 
 import { useSelector, useDispatch } from "react-redux";
+import OAuth from "../components/OAuth";
 
 function SignUp() {
   const [formData, setFormData] = useState({});
@@ -119,6 +120,7 @@ function SignUp() {
                 "ثبت نام"
               )}
             </button>
+
             <div className="flex items-center text-sm text-gray-800 font-vazir dark:text-gray-200">
               <p>حساب کاربری دارید؟</p>
               <Link to="/login" className=" cursor-pointer mr-2 font-bold">
@@ -127,6 +129,8 @@ function SignUp() {
             </div>
           </div>
         </form>
+        <OAuth />
+
         {errorMessage && (
           <Alert className="mt-5" color="failure">
             {errorMessage}
