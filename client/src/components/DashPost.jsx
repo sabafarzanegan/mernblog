@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Button, Table } from "flowbite-react";
+import { Button, Table, Spinner, Modal } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 function DashPost() {
   const { currentUser } = useSelector((state) => state.user);
   const [userPost, setUserPost] = useState([]);
   const [showmore, setShowMore] = useState(true);
+  const [showModal, setshowModal] = useState(false);
+  const [postIdToDelet, setPostIdToDelet] = useState("");
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -27,7 +30,7 @@ function DashPost() {
     if (currentUser.isAdmin) {
       fetchPost();
     }
-  }, [currentUser._id]);
+  }, [userPost]);
   const handleShowMore = async () => {
     const startIndex = userPost.length;
     try {
@@ -43,6 +46,25 @@ function DashPost() {
       }
     } catch (error) {
       console.log(error.message);
+    }
+  };
+  const handleDeletePost = async () => {
+    setshowModal(false);
+    try {
+      const res = await fetch(
+        `/api/post/deletepost/${postIdToDelet}/${currentUser._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        setUserPost((prev) => prev.filter((post) => post.id !== postIdToDelet));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -84,7 +106,12 @@ function DashPost() {
                     </Table.Cell>
                     <Table.Cell>{post.category}</Table.Cell>
                     <Table.Cell>
-                      <span className="font-medium font-vazir text-red-500  cursor-pointer">
+                      <span
+                        onClick={() => {
+                          setshowModal(true);
+                          setPostIdToDelet(post._id);
+                        }}
+                        className="font-medium font-vazir text-red-500  cursor-pointer">
                         حذف
                       </span>
                     </Table.Cell>
@@ -108,9 +135,37 @@ function DashPost() {
             )}
           </div>
         ) : (
-          <p>مقاله ای وجود ندارد!</p>
+          <Spinner
+            aria-label="Center-aligned spinner example"
+            size="xl"
+            className="flex items-center justify-center w-40 text-center"
+          />
         )}
       </div>
+      <Modal
+        show={showModal}
+        onClose={() => setshowModal(false)}
+        popup
+        size="md"
+        className="font-vazir ">
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+              از حذف مقاله اطمینان دارید؟
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDeletePost}>
+                بله
+              </Button>
+              <Button color="gray" onClick={() => setshowModal(false)}>
+                نه!
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
