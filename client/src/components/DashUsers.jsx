@@ -4,22 +4,24 @@ import { useSelector } from "react-redux";
 import { Button, Table, Spinner, Modal } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { FaCheck } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 
-function DashPost() {
+function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
-  const [userPost, setUserPost] = useState([]);
+  const [users, setUsers] = useState([]);
   const [showmore, setShowMore] = useState(true);
   const [showModal, setshowModal] = useState(false);
-  const [postIdToDelet, setPostIdToDelet] = useState("");
+  const [userIdToDelet, setUserIdToDelet] = useState("");
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchUser = async () => {
       try {
-        const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
+        const res = await fetch(`/api/user/getusers`);
         const data = await res.json();
         console.log(data);
         if (res.ok) {
-          setUserPost(data.posts);
-          if (data.posts.length < 9) {
+          setUsers(data.users);
+          if (data.users.length < 9) {
             setShowMore(false);
           }
         }
@@ -28,19 +30,17 @@ function DashPost() {
       }
     };
     if (currentUser.isAdmin) {
-      fetchPost();
+      fetchUser();
     }
-  }, [userPost]);
+  }, [users]);
   const handleShowMore = async () => {
-    const startIndex = userPost.length;
+    const startIndex = users.length;
     try {
-      const res = await fetch(
-        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
-      );
+      const res = await fetch(`/api/user/getusers?&startIndex=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
-        setUserPost((prev) => [...prev, ...data.posts]);
-        if (data.posts.length < 9) {
+        setUsers((prev) => [...prev, ...data.users]);
+        if (data.users.length < 9) {
           setShowMore(false);
         }
       }
@@ -48,20 +48,17 @@ function DashPost() {
       console.log(error.message);
     }
   };
-  const handleDeletePost = async () => {
+  const handleDeletuser = async () => {
     setshowModal(false);
     try {
-      const res = await fetch(
-        `/api/post/deletepost/${postIdToDelet}/${currentUser._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/api/user/delete/${userIdToDelet}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
       } else {
-        setUserPost((prev) => prev.filter((post) => post.id !== postIdToDelet));
+        setUsers((prev) => prev.filter((user) => user.id !== userIdToDelet));
       }
     } catch (error) {
       console.log(error);
@@ -70,56 +67,49 @@ function DashPost() {
   return (
     <>
       <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-        {currentUser.isAdmin && userPost.length > 0 ? (
+        {currentUser.isAdmin && users.length > 0 ? (
           <div className="overflow-x-auto">
             <Table>
               <Table.Head>
-                <Table.HeadCell>Date Update</Table.HeadCell>
-                <Table.HeadCell>Post Image</Table.HeadCell>
-                <Table.HeadCell>Post title</Table.HeadCell>
-                <Table.HeadCell>Category</Table.HeadCell>
+                <Table.HeadCell>Date Created</Table.HeadCell>
+                <Table.HeadCell>user Image</Table.HeadCell>
+                <Table.HeadCell>user image </Table.HeadCell>
+                <Table.HeadCell>user email </Table.HeadCell>
+                <Table.HeadCell>admin</Table.HeadCell>
                 <Table.HeadCell>Delete</Table.HeadCell>
-
-                <Table.HeadCell>Edit</Table.HeadCell>
               </Table.Head>
-              {userPost.map((post) => (
+              {users.map((user) => (
                 <Table.Body className="divide-y">
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell>
-                      {new Date(post.updatedAt).toLocaleDateString()}
+                      {new Date(user.createdAt).toLocaleDateString()}
                     </Table.Cell>
                     <Table.Cell>
-                      <Link to={`/post/${post.slug}`}>
+                      <Link to={`/post/${user.slug}`}>
                         <img
-                          src={post.image}
-                          className="w-20 h-10 object-cover bg-gray-500"
+                          src={user.profilePicture}
+                          className="w-1- h-10 object-cover rounded-full  overflow-hidden bg-gray-500"
                         />
                       </Link>
                     </Table.Cell>
+                    <Table.Cell>{user.username}</Table.Cell>
+                    <Table.Cell>{user.email}</Table.Cell>
                     <Table.Cell>
-                      <Link
-                        className="font-medium text-gray-900 dark:text-white"
-                        to={`/post/${post.slug}`}>
-                        {post.title}
-                      </Link>
+                      {user.isAdmin ? (
+                        <FaCheck className="text-green-500" />
+                      ) : (
+                        <IoMdClose className="text-red-600" />
+                      )}
                     </Table.Cell>
-                    <Table.Cell>{post.category}</Table.Cell>
                     <Table.Cell>
                       <span
                         onClick={() => {
                           setshowModal(true);
-                          setPostIdToDelet(post._id);
+                          setUserIdToDelet(user._id);
                         }}
                         className="font-medium font-vazir text-red-500  cursor-pointer">
                         حذف
                       </span>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Link
-                        className="text-teal-500  font-vazir"
-                        to={`/update-post/${post._id}`}>
-                        <span>اصلاح</span>
-                      </Link>
                     </Table.Cell>
                   </Table.Row>
                 </Table.Body>
@@ -152,10 +142,10 @@ function DashPost() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
             <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
-              از حذف مقاله اطمینان دارید؟
+              از حذف کاربر اطمینان دارید؟
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={handleDeletePost}>
+              <Button color="failure" onClick={handleDeletuser}>
                 بله
               </Button>
               <Button color="gray" onClick={() => setshowModal(false)}>
@@ -169,4 +159,4 @@ function DashPost() {
   );
 }
 
-export default DashPost;
+export default DashUsers;

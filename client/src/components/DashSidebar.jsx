@@ -1,5 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import { FaUserCheck } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
 
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -38,6 +39,17 @@ export default function DashSidebar() {
                 as="div"
                 icon={IoDocumentAttach}>
                 مقالات
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=users">
+              <Sidebar.Item
+                active={tab === "users"}
+                href="#"
+                as="div"
+                icon={FaUsers}>
+                کاربران
               </Sidebar.Item>
             </Link>
           )}
