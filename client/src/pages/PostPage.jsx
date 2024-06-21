@@ -1,6 +1,7 @@
 import { Button, Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import CommentSection from "../components/CommentSection";
 
 function PostPage() {
   const [post, setPost] = useState(null);
@@ -45,26 +46,31 @@ function PostPage() {
   }
   return (
     <>
-      {post && (
-        <div className="w-[80%] m-auto flex flex-col items-center mt-3">
-          <h1 className="my-6 text-center font-vazir text-2xl">{post.title}</h1>
-          <Link
-            className=" font-vazir mb-4 "
-            to={`/search?category=${post.category}`}>
-            <Button color="gray" pill>
-              {post.category}
-            </Button>
-          </Link>
-          <img src={post.image} className="rounded-md w-[60%] m-auto" />
-          <div className="flex flex-wrap items-center justify-between italic w-[60%] mt-5 py-2 border-b border-gray-500">
-            <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-            <p>{(post.content.length / 1000).toFixed(0)}mins read</p>
+      <div className="w-full">
+        {post && (
+          <div className="w-[80%] m-auto flex flex-col items-center mt-3">
+            <h1 className="my-6 text-center font-vazir text-2xl">
+              {post.title}
+            </h1>
+            <Link
+              className=" font-vazir mb-4 "
+              to={`/search?category=${post.category}`}>
+              <Button color="gray" pill>
+                {post.category}
+              </Button>
+            </Link>
+            <img src={post.image} className="rounded-md w-[60%] m-auto" />
+            <div className="flex flex-wrap items-center justify-between italic w-[60%] mt-5 py-2 border-b border-gray-500">
+              <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+              <p>{(post.content.length / 1000).toFixed(0)}mins read</p>
+            </div>
+            <div
+              className="w-[80%] md:w-[60%] py-4 tracking-wide leading-10 font-vazir text-md  "
+              dangerouslySetInnerHTML={{ __html: post.content }}></div>
           </div>
-          <div
-            className="w-[80%] md:w-[60%] py-4 tracking-wide leading-10 font-vazir text-md  "
-            dangerouslySetInnerHTML={{ __html: post.content }}></div>
-        </div>
-      )}
+        )}
+        <CommentSection className="mt-5 mb-5" postId={post._id} />
+      </div>
     </>
   );
 }
