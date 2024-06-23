@@ -1,10 +1,12 @@
 import { Alert, Button, Textarea } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import CommentPart from "./Comment";
 
 function CommentSection({ postId }) {
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
   const [commentError, setCommentError] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
   const commentSubmit = async (e) => {
@@ -26,7 +28,7 @@ function CommentSection({ postId }) {
         }),
       });
       const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
         setComment("");
       }
@@ -34,6 +36,20 @@ function CommentSection({ postId }) {
       console.log(error);
     }
   };
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        const data = await res.json();
+        if (res.ok) {
+          setComments(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, [postId]);
   return (
     <>
       <div className="w-[60%] m-auto rounded-md border p-4 border-green-400 ">
@@ -80,6 +96,19 @@ function CommentSection({ postId }) {
 
         {commentError && <Alert color="failure">{commentError}</Alert>}
       </div>
+      {comments && (
+        <div className="w-[60%] m-auto">
+          <div className="flex items-center justify-between ">
+            <h3 className="font-lale text-center  my-3 text-2xl">نظرات</h3>
+            <span className="font-vazir text-lg border border-green-400 w-6 h-6 flex items-center justify-center rounded-full ">
+              {comments.length}
+            </span>
+          </div>
+          {comments.map((item) => (
+            <CommentPart {...item} />
+          ))}
+        </div>
+      )}
     </>
   );
 }
