@@ -2,11 +2,14 @@ import { Button, Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CommentSection from "../components/CommentSection";
+import { CardPost } from "../components/Card";
 
 function PostPage() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [erroe, setError] = useState(false);
+  const [recentPost, setRecentPost] = useState(null);
+
   const { slug } = useParams();
 
   useEffect(() => {
@@ -31,6 +34,20 @@ function PostPage() {
     };
     fetchPost();
   }, [slug]);
+  useEffect(() => {
+    const fetchRecentPost = async () => {
+      try {
+        const res = await fetch(`/api/post/getposts?limit=3`);
+        const data = await res.json();
+        if (res.ok) {
+          setRecentPost(data.posts);
+        }
+      } catch (error) {
+        console.log(erroe);
+      }
+    };
+    fetchRecentPost();
+  }, []);
   if (loading) {
     return (
       <>
@@ -70,6 +87,10 @@ function PostPage() {
           </div>
         )}
         <CommentSection className="mt-5 mb-5" postId={post._id} />
+        <h2 className="font-vazir text-xl mt-3 text-center">آخرین مقاله ها</h2>
+        <div className="flex items-center justify-center md:justify-between mt-4 p-4 flex-wrap gap-y-3">
+          {recentPost && recentPost.map((post) => <CardPost post={post} />)}
+        </div>
       </div>
     </>
   );
