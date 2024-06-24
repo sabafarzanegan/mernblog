@@ -1,7 +1,7 @@
 import { Alert, Button, Textarea } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CommentPart from "./Comment";
 
 function CommentSection({ postId }) {
@@ -9,6 +9,7 @@ function CommentSection({ postId }) {
   const [comments, setComments] = useState([]);
   const [commentError, setCommentError] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
+  const Navigate = useNavigate();
   const commentSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200 || comment.length == 0) {
@@ -50,6 +51,34 @@ function CommentSection({ postId }) {
     };
     getComments();
   }, [postId]);
+  const handleLike = async (commentId) => {
+    if (!currentUser) {
+      Navigate("/login");
+      return;
+    }
+    try {
+      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+        method: "PUT",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data);
+        setComment(
+          comments.map((comment) => {
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.likes.length,
+                }
+              : comment;
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <>
       <div className="w-[60%] m-auto rounded-md border p-4 border-green-400 ">
@@ -105,7 +134,7 @@ function CommentSection({ postId }) {
             </span>
           </div>
           {comments.map((item) => (
-            <CommentPart {...item} />
+            <CommentPart key={item._id} item={item} onlike={handleLike} />
           ))}
         </div>
       )}
