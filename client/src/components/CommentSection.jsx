@@ -50,7 +50,7 @@ function CommentSection({ postId }) {
       }
     };
     getComments();
-  }, [postId]);
+  }, [comments]);
   const handleLike = async (commentId) => {
     if (!currentUser) {
       Navigate("/login");
@@ -62,7 +62,6 @@ function CommentSection({ postId }) {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         setComment(
           comments.map((comment) => {
             comment._id === commentId
@@ -77,6 +76,28 @@ function CommentSection({ postId }) {
       }
     } catch (error) {
       console.log(error.message);
+    }
+  };
+  const delethandler = async (commentId) => {
+    try {
+      if (!currentUser) {
+        Navigate("/login");
+        return;
+      }
+      const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        const data = await res.json();
+
+        setComments(
+          comments.filter((item) => {
+            item._id !== commentId;
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -134,7 +155,12 @@ function CommentSection({ postId }) {
             </span>
           </div>
           {comments.map((item) => (
-            <CommentPart key={item._id} item={item} onlike={handleLike} />
+            <CommentPart
+              key={item._id}
+              item={item}
+              onlike={handleLike}
+              onDelete={delethandler}
+            />
           ))}
         </div>
       )}
