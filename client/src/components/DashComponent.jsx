@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Button, Table, Spinner, Modal } from "flowbite-react";
-import { Link } from "react-router-dom";
+
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { FaCheck } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
 
 function DashComment() {
   const { currentUser } = useSelector((state) => state.user);
@@ -154,4 +152,4 @@ function DashComment() {
   );
 }
 
-export default DashComponent;
+export default DashComment;
