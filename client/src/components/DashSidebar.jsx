@@ -1,6 +1,9 @@
 import { Sidebar } from "flowbite-react";
 import { FaUserCheck } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
+import { FaRegComments } from "react-icons/fa6";
+
+import { RxDashboard } from "react-icons/rx";
 
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -21,6 +24,17 @@ export default function DashSidebar() {
       className="border-l dark:bg-gray-700 w-full md:w-56">
       <Sidebar.Items className="font-vazir ">
         <Sidebar.ItemGroup className="flex flex-col gap-y-2">
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=dashboard">
+              <Sidebar.Item
+                active={tab === "dashboard"}
+                href="#"
+                as="div"
+                icon={RxDashboard}>
+                داشبورد
+              </Sidebar.Item>
+            </Link>
+          )}
           <Link to="/dashboard?tab=profile">
             <Sidebar.Item
               active={tab === "profile"}
@@ -28,7 +42,7 @@ export default function DashSidebar() {
               as="div"
               label={currentUser.isAdmin ? "Admin" : "User"}
               icon={FaUserCheck}>
-              داشبورد
+              بروفایل
             </Sidebar.Item>
           </Link>
           {currentUser.isAdmin && (
@@ -50,6 +64,17 @@ export default function DashSidebar() {
                 as="div"
                 icon={FaUsers}>
                 کاربران
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=comments">
+              <Sidebar.Item
+                active={tab === "comments"}
+                href="#"
+                as="div"
+                icon={FaRegComments}>
+                نظرات
               </Sidebar.Item>
             </Link>
           )}
