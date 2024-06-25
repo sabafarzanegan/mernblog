@@ -2,7 +2,6 @@ import { Button, Card } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 export function CardPost({ post }) {
-  console.log(post);
   return (
     <Card
       className="max-w-sm transition-all duration-100 hover:-translate-y-6"
