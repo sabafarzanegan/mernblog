@@ -42,7 +42,7 @@ export default function DashSidebar() {
               as="div"
               label={currentUser.isAdmin ? "Admin" : "User"}
               icon={FaUserCheck}>
-              بروفایل
+              پروفایل
             </Sidebar.Item>
           </Link>
           {currentUser.isAdmin && (

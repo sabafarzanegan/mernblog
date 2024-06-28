@@ -73,11 +73,11 @@ function Search() {
   return (
     <>
       <h1 className="font-lale text-center text-xl mt-3">صفحه جست وجو </h1>
-      <div className="flex items-start justify-between ">
+      <div className="flex flex-wrap items-start justify-between md:flex-nowrap  ">
         <form
           action=""
           onSubmit={handleSubmit}
-          className="flex flex-col items-center justify-center gap-y-2 mt-6 px-4  ">
+          className="flex flex-col items-center justify-center gap-y-2 mt-6 px-4 m-auto">
           <label htmlFor="" className="font-vazir text-md  ">
             کلمه جستجو
           </label>

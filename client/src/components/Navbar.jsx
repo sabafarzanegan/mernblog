@@ -22,6 +22,7 @@ import {
   NavbarLink,
   NavbarToggle,
   Button,
+  TextInput,
 } from "flowbite-react";
 
 export default function Header() {
@@ -71,7 +72,10 @@ export default function Header() {
   };
 
   return (
-    <Navbar fluid rounded className="shadow-xl  dark:bg-gray-800">
+    <Navbar
+      fluid
+      rounded
+      className="shadow-xl  dark:border-b dark:border-gray-400 dark:bg-gray-800">
       <NavbarBrand className="flex items-center justify-center gap-x-4">
         <Link to="/" className="flex items-center justify-center gap-x-1">
           <img
@@ -122,32 +126,33 @@ export default function Header() {
 
         <NavbarToggle />
       </div>
-      <NavbarCollapse className="font-vazir font-semibold text-md md:text-lg">
-        <NavbarLink className="ml-5">
-          <Link to="/" className="text-lg">
+      <NavbarCollapse className="font-vazir font-semibold text-md md:text-lg ">
+        <NavbarLink className="ml-5 ">
+          <Link to="/" className="text-lg dark:text-gray-200">
             خانه
           </Link>
         </NavbarLink>
         <NavbarLink>
-          <Link to="/about" className="text-lg">
+          <Link to="/about" className="text-lg dark:text-gray-200">
             درباره ما
           </Link>
         </NavbarLink>
         <NavbarLink>
-          <Link to="/blogs" className="text-lg">
+          <Link to="/blogs" className="text-lg dark:text-gray-200">
             بلاگ
           </Link>
         </NavbarLink>
       </NavbarCollapse>
       <form onSubmit={searchhandler}>
-        <input
+        <TextInput
           value={searchTerm}
           onChange={(e) => {
             setsearchTerm(e.target.value);
           }}
           type="text"
+          icon={MdOutlineSearch}
           placeholder="جستجو"
-          className="py-1 px-2 rounded-md font-vazir text-gray-700 dark:text-white  dark:bg-slate-600"
+          className="py-1 px-2 rounded-md font-vazir text-gray-700 dark:text-white placeholder:text-gray-400 "
         />
       </form>
     </Navbar>

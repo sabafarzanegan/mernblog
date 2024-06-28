@@ -27,9 +27,11 @@ function Home() {
   return (
     <>
       <h1 className="font-lale text-3xl mt-3 text-center">بلاگ مرن</h1>
-      <h2 className="text-right font-vazir text-xl p-2  ">آخرین مقالات </h2>
+      <h2 className="text-right font-vazir text-xl px-10 mt-3 font-semibold ">
+        آخرین مقالات{" "}
+      </h2>
 
-      <section className="w-[90%] mt-4 m-auto flex items-center justify-center gap-x-2 gap-y-5 flex-wrap ">
+      <section className="w-[90%] mt-4 m-auto flex items-center justify-center gap-x-2 gap-y-5 flex-wrap mb-5 ">
         {loading ? (
           <Spinner aria-label="Extra large spinner example" size="xl" />
         ) : (

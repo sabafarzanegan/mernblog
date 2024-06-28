@@ -8,7 +8,6 @@ import {
   LoginSuccess,
   LoginFailed,
 } from "../components/redux/UserSlice";
-import OAuth from "../components/OAuth";
 
 function Login() {
   const [formData, setFormData] = useState({});
@@ -115,7 +114,7 @@ function Login() {
             </div>
           </div>
         </form>
-        <OAuth />
+
         {error && (
           <Alert className="mt-5" color="failure">
             {error}
