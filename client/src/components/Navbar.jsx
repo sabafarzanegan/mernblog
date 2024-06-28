@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../asset/image/icons8-blog-64.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfileLogo from "../asset/image/icons8-user-default-64.png";
 import { useSelector, useDispatch } from "react-redux";
 import { LuSun } from "react-icons/lu";
 import { LuMoon } from "react-icons/lu";
+import { MdOutlineSearch } from "react-icons/md";
 
 import { toggleTheme } from "./redux/themeSlice";
 import { signoutSuccess } from "./redux/UserSlice";
@@ -27,6 +28,17 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
 
   const { theme } = useSelector((state) => state.theme);
+  const location = useLocation();
+  const [searchTerm, setsearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParam = new URLSearchParams(location.search);
+    const searchTermFromURL = urlParam.get("searchTerm");
+    if (searchTermFromURL) {
+      setsearchTerm(searchTermFromURL);
+    }
+  }, [location.search]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -49,6 +61,13 @@ export default function Header() {
     } catch (error) {
       console.log(error.message);
     }
+  };
+  const searchhandler = async (e) => {
+    e.preventDefault();
+    const urlParam = new URLSearchParams(location.search);
+    urlParam.set("searchTerm", searchTerm);
+    const searchQuery = urlParam.toString();
+    navigate(`/search?${searchQuery}`);
   };
 
   return (
@@ -120,6 +139,17 @@ export default function Header() {
           </Link>
         </NavbarLink>
       </NavbarCollapse>
+      <form onSubmit={searchhandler}>
+        <input
+          value={searchTerm}
+          onChange={(e) => {
+            setsearchTerm(e.target.value);
+          }}
+          type="text"
+          placeholder="جستجو"
+          className="py-1 px-2 rounded-md font-vazir text-gray-700 dark:text-white  dark:bg-slate-600"
+        />
+      </form>
     </Navbar>
   );
 }

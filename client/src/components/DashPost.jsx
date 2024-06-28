@@ -30,7 +30,7 @@ function DashPost() {
     if (currentUser.isAdmin) {
       fetchPost();
     }
-  }, [userPost]);
+  }, []);
   const handleShowMore = async () => {
     const startIndex = userPost.length;
     try {
